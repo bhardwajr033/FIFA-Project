@@ -6,11 +6,24 @@ const worldCupMatchesPath = path.join(__dirname,"src/data/WorldCupMatches.csv");
 const worldCupPlayersPath = path.join(__dirname,"src/data/WorldCupPlayers.csv");
 const worldCupsPath = path.join(__dirname,"src/data/WorldCups.csv");
 
-const numberOfMatchesPlayedPerCity = require(path.join(__dirname, './src/server/1-number-of-matches-played-per-city.cjs'));
+//Ques 1 - Number of matches played per city
 csv()
     .fromFile(worldCupMatchesPath)
     .then((matches) => {
-        let result = numberOfMatchesPlayedPerCity(matches)
+        const numberOfMatchesPlayedPerCity = require(path.join(__dirname, './src/server/1-number-of-matches-played-per-city.cjs'));
 
-        fs.writeFileSync(path.join(__dirname, './src/public/output/1-number-of-matches-played-per-city.json'), JSON.stringify(result), "utf-8")
+        let result = numberOfMatchesPlayedPerCity(matches);
+
+        fs.writeFileSync(path.join(__dirname, './src/public/output/1-number-of-matches-played-per-city.json'), JSON.stringify(result), "utf-8");
+    })
+
+//Ques 2 - Number of matches won per team
+csv()
+    .fromFile(worldCupMatchesPath)
+    .then((matches) => {
+        const numberOfMatchesWonPerTeam = require(path.join(__dirname, './src/server/2-number-of-matches-won-per-team.cjs'));
+        
+        let result = numberOfMatchesWonPerTeam(matches);
+
+        fs.writeFileSync(path.join(__dirname, './src/public/output/2-number-of-matches-won-per-team.json'), JSON.stringify(result), "utf-8")
     })
