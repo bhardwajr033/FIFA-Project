@@ -16,6 +16,7 @@ function numberOfMatchesWonPerTeam(worldCupMatches){
 
     for(let matches of worldCupMatches){
         if(matches.Year === ''){
+            //Ignoring Missing Values
             continue;
         }
 
@@ -37,6 +38,7 @@ function numberOfMatchesWonPerTeam(worldCupMatches){
         updateMatchesWonPerTeam(winTeam);
 
     }
+    
     return matchesWonPerTeam;
 }
 

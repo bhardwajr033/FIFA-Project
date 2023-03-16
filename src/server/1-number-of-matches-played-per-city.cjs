@@ -7,6 +7,7 @@ function numberOfMatchesPlayedPerCity(worldCupMatches){
     
     for(let matches of worldCupMatches){
         if(matches.City === ""){
+            // Ignoring Missing Values
             continue;
         }
         if(!matchesPerCity[matches.City]){

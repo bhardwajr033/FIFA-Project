@@ -6,6 +6,7 @@ const worldCupMatchesPath = path.join(__dirname,"src/data/WorldCupMatches.csv");
 const worldCupPlayersPath = path.join(__dirname,"src/data/WorldCupPlayers.csv");
 const worldCupsPath = path.join(__dirname,"src/data/WorldCups.csv");
 
+
 //Ques 1 - Number of matches played per city
 csv()
     .fromFile(worldCupMatchesPath)
@@ -16,6 +17,7 @@ csv()
 
         fs.writeFileSync(path.join(__dirname, './src/public/output/1-number-of-matches-played-per-city.json'), JSON.stringify(result), "utf-8");
     })
+
 
 //Ques 2 - Number of matches won per team
 csv()
