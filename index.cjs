@@ -27,5 +27,21 @@ csv()
         
         let result = numberOfMatchesWonPerTeam(matches);
 
-        fs.writeFileSync(path.join(__dirname, './src/public/output/2-number-of-matches-won-per-team.json'), JSON.stringify(result), "utf-8")
+        fs.writeFileSync(path.join(__dirname, './src/public/output/2-number-of-matches-won-per-team.json'), JSON.stringify(result), "utf-8");
+    })
+
+//Ques 3 - Find number of red cards issued per team in 2014 world cup
+csv()
+    .fromFile(worldCupMatchesPath)
+    .then((matches) => {
+        csv()
+            .fromFile(worldCupPlayersPath)
+            .then((players) => {
+
+                const numberOfRedCardsIssuedPerTeamIn2014 = require(path.join(__dirname,'./src/server/3-number-of-red-cards-issued-per-team-in-2014.cjs'));
+
+                let result = numberOfRedCardsIssuedPerTeamIn2014(matches,players);
+
+                fs.writeFileSync(path.join(__dirname,'./src/public/output/3-red-cards-issued-per-team-in-2014.json'), JSON.stringify(result), "utf-8");
+            })
     })
