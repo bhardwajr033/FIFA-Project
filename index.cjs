@@ -48,6 +48,7 @@ csv()
 
 
 //Ques 4 - Find the top 10 players with the highest probability of scoring a goal in a match
+// Considering player has played atleast 5 matches.
 csv()
     .fromFile(worldCupPlayersPath)
     .then((players) => {

@@ -6,21 +6,21 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
         return playersProbScoringGoal;
     }
 
-    function updatePlayerStats(playerName,goalCount){
+    function updatePlayerStats(playerName,isGoalScored){
         let playerIndex = playerStats.findIndex(player => player.playername === playerName);
 
         if(playerIndex === -1){
             let player = {};
             player.playername = playerName;
             player.matches = 1;
-            player.totalGoals = goalCount;
+            player.totalGoals = isGoalScored;
             player.scoringProb = parseFloat(((player.totalGoals/player.matches)*100).toFixed(2));
             playerStats.push(player);
         }
         else{
             playerStats[playerIndex].matches += 1;
-            playerStats[playerIndex].totalGoals += goalCount;
-            playerStats[playerIndex].scoringProb = parseFloat((playerStats[playerIndex].totalGoals/playerStats[playerIndex].matches)*100).toFixed(2);
+            playerStats[playerIndex].totalGoals += isGoalScored;
+            playerStats[playerIndex].scoringProb = parseFloat(((playerStats[playerIndex].totalGoals/playerStats[playerIndex].matches)*100).toFixed(2));
         }
     }
 
@@ -32,17 +32,17 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
         const events = players.Event.split(' ');
 
         let playerName = players['Player Name'];
-        let goalCount = 0;
+        let isGoalScored = 0;
 
         for(let event of events){
             if(event.startsWith('G')){
                 playerName = players['Player Name'];
-                goalCount+=1;
+                isGoalScored=1;
             }
         }
 
         if(playerName){
-            updatePlayerStats(playerName,goalCount);
+            updatePlayerStats(playerName,isGoalScored);
         }
     }
 
@@ -56,10 +56,12 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
         return 0;
     }
 
-    playerStats.sort(sortByProbDecending);
+    let playerStatsAtleast5matches = playerStats.filter(player => player.matches > 5);
+
+    playerStatsAtleast5matches.sort(sortByProbDecending);
     
     for(let index=0;index<topN;index++){
-        playersProbScoringGoal[playerStats[index].playername] = playerStats[index].scoringProb;
+        playersProbScoringGoal[playerStatsAtleast5matches[index].playername] = playerStatsAtleast5matches[index].scoringProb;
     }
 
     return playersProbScoringGoal;
