@@ -14,13 +14,13 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
             player.playername = playerName;
             player.matches = 1;
             player.totalGoals = goalCount;
-            player.scoringProb = ((player.totalGoals/player.matches)*100).toFixed(2);
+            player.scoringProb = parseFloat(((player.totalGoals/player.matches)*100).toFixed(2));
             playerStats.push(player);
         }
         else{
             playerStats[playerIndex].matches += 1;
             playerStats[playerIndex].totalGoals += goalCount;
-            playerStats[playerIndex].scoringProb = ((playerStats[playerIndex].totalGoals/playerStats[playerIndex].matches)*100).toFixed(2);
+            playerStats[playerIndex].scoringProb = parseFloat((playerStats[playerIndex].totalGoals/playerStats[playerIndex].matches)*100).toFixed(2);
         }
     }
 
@@ -31,7 +31,7 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
 
         const events = players.Event.split(' ');
 
-        let playerName;
+        let playerName = players['Player Name'];
         let goalCount = 0;
 
         for(let event of events){
@@ -41,7 +41,7 @@ function top10PlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayers,
             }
         }
 
-        if(playerName && goalCount){
+        if(playerName){
             updatePlayerStats(playerName,goalCount);
         }
     }
