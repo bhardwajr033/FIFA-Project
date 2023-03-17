@@ -45,3 +45,17 @@ csv()
                 fs.writeFileSync(path.join(__dirname,'./src/public/output/3-red-cards-issued-per-team-in-2014.json'), JSON.stringify(result), "utf-8");
             })
     })
+
+
+//Ques 4 - Find the top 10 players with the highest probability of scoring a goal in a match
+csv()
+    .fromFile(worldCupPlayersPath)
+    .then((players) => {
+
+        const top10PlayersWithHighestProbabilityScoringAGoalInAMatch = require(path.join(__dirname,'./src/server/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.cjs'));
+
+        let result = top10PlayersWithHighestProbabilityScoringAGoalInAMatch(players,10);
+
+        fs.writeFileSync(path.join(__dirname,'./src/public/output/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.json'), JSON.stringify(result) ,"utf-8");
+
+    })
