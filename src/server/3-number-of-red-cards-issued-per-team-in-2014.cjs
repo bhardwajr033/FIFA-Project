@@ -37,7 +37,7 @@ function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,yea
         const events = players.Event.split(' ');
 
         for(let event of events){
-            if(event.startsWith("R") || event.startsWith("YR")){
+            if(event.startsWith("R") || event.startsWith("SY")){
                 const teamName = getTeamName(players.MatchID,players['Team Initials']);
                 if(teamName){
                     UpdateRedCardPerTeam(teamName);
