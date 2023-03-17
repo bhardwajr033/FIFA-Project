@@ -40,7 +40,7 @@ csv()
 
                 const numberOfRedCardsIssuedPerTeamIn2014 = require(path.join(__dirname,'./src/server/3-number-of-red-cards-issued-per-team-in-2014.cjs'));
 
-                let result = numberOfRedCardsIssuedPerTeamIn2014(matches,players);
+                let result = numberOfRedCardsIssuedPerTeamIn2014(matches,players,2014);
 
                 fs.writeFileSync(path.join(__dirname,'./src/public/output/3-red-cards-issued-per-team-in-2014.json'), JSON.stringify(result), "utf-8");
             })
