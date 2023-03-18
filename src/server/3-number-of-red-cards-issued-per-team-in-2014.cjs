@@ -29,22 +29,19 @@ function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,yea
             return match['Away Team Name'];
         }
     }
-    
-    for(let players of worldCupPlayers){
-        if(players.Event == ''){
-            continue;
-        }
-        const events = players.Event.split(' ');
 
-        for(let event of events){
-            if(event.startsWith("R") || event.startsWith("SY")){
-                const teamName = getTeamName(players.MatchID,players['Team Initials']);
+    worldCupPlayers.filter(({City}) => City !== '')
+    .map((player) => {
+        const events = player.Event.split(' ');
+        events.map((event_in_match) => {
+            if(event_in_match.startsWith("R") || event_in_match.startsWith("SY")){
+                const teamName = getTeamName(player.MatchID,player['Team Initials']);
                 if(teamName){
                     UpdateRedCardPerTeam(teamName);
                 }
             }
-        }
-    }
+        });
+    });
 
     return redCardsIssuedPerTeamIn2014;
 }
