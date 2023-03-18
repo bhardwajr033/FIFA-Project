@@ -5,13 +5,11 @@ function numberOfMatchesWonPerTeam(worldCupMatches){
         return matchesWonPerTeam;
     }
 
-    for(let matches of worldCupMatches){
-        if(matches['Home Team Name'] === ''){
-            continue;
-        }
-        matchesWonPerTeam[matches['Home Team Name']] = 0;
-        matchesWonPerTeam[matches['Away Team Name']] = 0;
-    }
+    worldCupMatches.filter(({City}) => City !== '')
+    .map((match) => {
+        matchesWonPerTeam[match['Home Team Name']] = 0;
+        matchesWonPerTeam[match['Away Team Name']] = 0;
+    });
 
     function getWinTeamFromPenalties(winCondition,matches){
         if(winCondition === ' '){
@@ -32,31 +30,19 @@ function numberOfMatchesWonPerTeam(worldCupMatches){
         return;
     }
 
-    for(let matches of worldCupMatches){
-        if(matches['Home Team Name'] === ''){
-            //Ignoring Missing Values
-            continue;
-        }
+    
+    worldCupMatches.filter(({City}) => City !== '')
+    .map((match) => {
+        let homeTeamGoals = parseInt(match['Home Team Goals']);
+        let awayTeamGoals = parseInt(match['Away Team Goals']);
+        return homeTeamGoals >= awayTeamGoals ? homeTeamGoals === awayTeamGoals ?
+        getWinTeamFromPenalties(match['Win conditions'],match):
+        match['Home Team Name'] : match['Away Team Name'];
+    }).
+    map((teamName) => {if(teamName){
+        matchesWonPerTeam[teamName]+=1;
+    }});
 
-        let winTeam;
-
-        const homeTeamGoals = parseInt(matches['Home Team Goals']);
-        const awayTeamGoals = parseInt(matches['Away Team Goals']);
-        
-        if(homeTeamGoals > awayTeamGoals){
-            winTeam = matches['Home Team Name'];
-        }
-        else if(homeTeamGoals < awayTeamGoals){
-            winTeam = matches['Away Team Name'];
-        }
-        else if(homeTeamGoals === awayTeamGoals){
-            winTeam = getWinTeamFromPenalties(matches['Win conditions'],matches);
-        }
-
-        if(winTeam){
-            matchesWonPerTeam[winTeam]+=1;
-        }
-    }
     
     return matchesWonPerTeam;
 }
