@@ -1,10 +1,11 @@
-function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,year){
+function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,year = 2014){
     
     let redCardsIssuedPerTeamIn2014 = {};
 
     if(!Array.isArray(worldCupMatches) || !Array.isArray(worldCupPlayers)){
         return redCardsIssuedPerTeamIn2014;
     }
+
 
     function UpdateRedCardPerTeam(teamName){
         if(!redCardsIssuedPerTeamIn2014[teamName]){
@@ -29,10 +30,12 @@ function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,yea
             return match['Away Team Name'];
         }
     }
+    
 
     worldCupPlayers.filter(({City}) => City !== '')
     .map((player) => {
         const events = player.Event.split(' ');
+
         events.map((event_in_match) => {
             if(event_in_match.startsWith("R") || event_in_match.startsWith("SY")){
                 const teamName = getTeamName(player.MatchID,player['Team Initials']);
@@ -42,6 +45,7 @@ function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,yea
             }
         });
     });
+
 
     return redCardsIssuedPerTeamIn2014;
 }

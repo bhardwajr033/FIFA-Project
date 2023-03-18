@@ -1,15 +1,18 @@
 function numberOfMatchesWonPerTeam(worldCupMatches){
+
     let matchesWonPerTeam = {};
 
     if(!Array.isArray(worldCupMatches)){
         return matchesWonPerTeam;
     }
 
+
     worldCupMatches.filter(({City}) => City !== '')
     .map((match) => {
         matchesWonPerTeam[match['Home Team Name']] = 0;
         matchesWonPerTeam[match['Away Team Name']] = 0;
     });
+
 
     function getWinTeamFromPenalties(winCondition,matches){
         if(winCondition === ' '){
@@ -35,11 +38,14 @@ function numberOfMatchesWonPerTeam(worldCupMatches){
     .map((match) => {
         let homeTeamGoals = parseInt(match['Home Team Goals']);
         let awayTeamGoals = parseInt(match['Away Team Goals']);
+
         return homeTeamGoals >= awayTeamGoals ? homeTeamGoals === awayTeamGoals ?
         getWinTeamFromPenalties(match['Win conditions'],match):
         match['Home Team Name'] : match['Away Team Name'];
+        
     }).
-    map((teamName) => {if(teamName){
+    map((teamName) => {
+        if(teamName){
         matchesWonPerTeam[teamName]+=1;
     }});
 
