@@ -13,7 +13,7 @@ function getTopNPlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayer
         const playerName = player['Player Name'];
         const isGoalScored = player.Event.includes('G') ? 1 : 0;
 
-        let playerIndex = acc.findIndex(player => player.playername === playerName);
+        const playerIndex = acc.findIndex(player => player.playername === playerName);
 
         //Intializing player Stats
         if(playerIndex === -1){
@@ -32,7 +32,8 @@ function getTopNPlayersWithHighestProbabilityScoringAGoalInAMatch(worldCupPlayer
 
         return acc;
 
-    },[]).filter(player => player.matches > 5)
+    },[])
+    .filter(player => player.matches > 5)
     .sort((player1,player2) => {
         return player1.scoringProb >= player2.scoringProb ? 
         player1.scoringProb === player2.scoringProb ?
