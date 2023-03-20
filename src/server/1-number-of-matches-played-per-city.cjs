@@ -1,19 +1,18 @@
-function numberOfMatchesPlayedPerCity(worldCupMatches){
+function getNumberOfMatchesPlayedPerCity(worldCupMatches){
 
-    let matchesPerCity = {};
-
-    if(!Array.isArray(worldCupMatches)){
-        return matchesPerCity;
+    if(!worldCupMatches){
+        return {};
     }
 
+    if(!Array.isArray(worldCupMatches)){
+        return {};
+    }
 
-    worldCupMatches.filter(({City}) => City !== '')
-    .map(({City}) => {
-        !matchesPerCity[City] ? matchesPerCity[City] = 1 : matchesPerCity[City]+=1;
-    });
-
-    
-    return matchesPerCity;
+    return worldCupMatches.reduce((acc,match) => {
+        acc[match.City] = acc[match.City] || 0;
+        acc[match.City] += 1;
+        return acc;
+    },{})
 }
 
-module.exports = numberOfMatchesPlayedPerCity;
+module.exports = getNumberOfMatchesPlayedPerCity;

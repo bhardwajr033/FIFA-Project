@@ -1,56 +1,67 @@
-function numberOfMatchesWonPerTeam(worldCupMatches){
+function getNumberOfMatchesWonPerTeam(worldCupMatches){
 
-    let matchesWonPerTeam = {};
+    if(!worldCupMatches){
+        return {};
+    }
 
     if(!Array.isArray(worldCupMatches)){
-        return matchesWonPerTeam;
+        return {};
     }
 
-
-    worldCupMatches.filter(({City}) => City !== '')
-    .map((match) => {
-        matchesWonPerTeam[match['Home Team Name']] = 0;
-        matchesWonPerTeam[match['Away Team Name']] = 0;
-    });
+    const homeTeamName = 'Home Team Name';
+    const awayTeamName = 'Away Team Name';
+    const homeGoalsString = 'Home Team Goals';
+    const awayGoalsString = 'Away Team Goals';
 
 
-    function getWinTeamFromPenalties(winCondition,matches){
-        if(winCondition === ' '){
-            return
-        }
-        let homeTeamGoals = winCondition.split(' ');
-        homeTeamGoals = parseInt(homeTeamGoals[homeTeamGoals.length - 4][1]);
+    return worldCupMatches.reduce((acc,match) => {
 
-        let awayTeamGoals = winCondition.split(' ');
-        awayTeamGoals = parseInt(awayTeamGoals[awayTeamGoals.length - 2][0]);
+        acc[match[homeTeamName]] = acc[match[homeTeamName]] || 0;
+        acc[match[awayTeamName]] = acc[match[awayTeamName]] || 0;
+
+        const homeTeamGoals = parseInt(match[homeGoalsString]);
+        const awayTeamGoals = parseInt(match[awayGoalsString]);
+
+        let winTeamName;
 
         if(homeTeamGoals > awayTeamGoals){
-            return matches['Home Team Name'];
+            winTeamName = match[homeTeamName];
         }
-        if(homeTeamGoals < awayTeamGoals){
-            return matches['Away Team Name'];
+        else if(homeTeamGoals < awayTeamGoals){
+            winTeamName = match[awayTeamName];
         }
-        return;
-    }
+        else{
+            winTeamName = getWinTeamFromPenalties(match);
+        }
 
-    
-    worldCupMatches.filter(({City}) => City !== '')
-    .map((match) => {
-        let homeTeamGoals = parseInt(match['Home Team Goals']);
-        let awayTeamGoals = parseInt(match['Away Team Goals']);
+        if(winTeamName){
+            acc[winTeamName]+=1;
+        }
 
-        return homeTeamGoals >= awayTeamGoals ? homeTeamGoals === awayTeamGoals ?
-        getWinTeamFromPenalties(match['Win conditions'],match):
-        match['Home Team Name'] : match['Away Team Name'];
-        
-    }).
-    map((teamName) => {
-        if(teamName){
-        matchesWonPerTeam[teamName]+=1;
-    }});
-
-    
-    return matchesWonPerTeam;
+        return acc;
+    },{})
 }
 
-module.exports = numberOfMatchesWonPerTeam;
+function getWinTeamFromPenalties(match){
+    const winCondition = match['Win conditions'];
+
+    if(winCondition === ' '){
+        return
+    }
+
+    let homeTeamNameGoals = winCondition.split(' ');
+    homeTeamNameGoals = parseInt(homeTeamNameGoals[homeTeamNameGoals.length - 4][1]);
+
+    let awayTeamNameGoals = winCondition.split(' ');
+    awayTeamNameGoals = parseInt(awayTeamNameGoals[awayTeamNameGoals.length - 2][0]);
+
+    if(homeTeamNameGoals > awayTeamNameGoals){
+        return match['Home Team Name'];
+    }
+    if(homeTeamNameGoals < awayTeamNameGoals){
+        return match['Away Team Name'];
+    }
+    return
+}
+
+module.exports = getNumberOfMatchesWonPerTeam;

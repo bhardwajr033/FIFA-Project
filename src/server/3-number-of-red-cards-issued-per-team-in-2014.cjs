@@ -1,53 +1,39 @@
-function numberOfRedCardsIssuedPerTeamIn2014(worldCupMatches,worldCupPlayers,year = 2014){
+function getNumberOfRedCardsIssuedPerTeamInAYear(worldCupMatches,worldCupPlayers,year = 2014){
     
-    let redCardsIssuedPerTeamIn2014 = {};
+    if(!worldCupMatches || !worldCupPlayers){
+        return {};
+    }
 
     if(!Array.isArray(worldCupMatches) || !Array.isArray(worldCupPlayers)){
-        return redCardsIssuedPerTeamIn2014;
+        return {};
     }
 
 
-    function UpdateRedCardPerTeam(teamName){
-        if(!redCardsIssuedPerTeamIn2014[teamName]){
-            redCardsIssuedPerTeamIn2014[teamName] = 1;
+    const teamNamesofAYear = worldCupMatches.filter(match => match.Year === year.toString())
+    .reduce((acc,match) => {
+        acc[match.MatchID] = {
+            homeTeamInitials : match['Home Team Initials'],
+            homeTeamName : match['Home Team Name'],
+            awayTeamName : match['Away Team Name']
+        }
+        return acc;
+    },{});
+
+    return worldCupPlayers.filter(player => player.Event.includes('R'))
+    .reduce((acc,player) => {
+        const match = teamNamesofAYear[player.MatchID];
+        if(!match){
+        }
+        else if(match.homeTeamInitials === player['Team Initials']){
+            acc[match.homeTeamName] = acc[match.homeTeamName] || 0;
+            acc[match.homeTeamName]+=1;
         }
         else{
-            redCardsIssuedPerTeamIn2014[teamName]+=1;
+            acc[match.awayTeamName] = acc[match.awayTeamName] || 0;
+            acc[match.awayTeamName]+=1;
         }
-    }
-
-    function getTeamName(matchID,teamInitials){
-        const match =  worldCupMatches.find(matches => matches.MatchID === matchID);
-
-        if(match.Year !== year.toString()){
-            return null;
-        }
-
-        if(match['Home Team Initials'] === teamInitials){
-            return match['Home Team Name'];
-        }
-        else{
-            return match['Away Team Name'];
-        }
-    }
-    
-
-    worldCupPlayers.filter(({City}) => City !== '')
-    .map((player) => {
-        const events = player.Event.split(' ');
-
-        events.map((event_in_match) => {
-            if(event_in_match.startsWith("R") || event_in_match.startsWith("SY")){
-                const teamName = getTeamName(player.MatchID,player['Team Initials']);
-                if(teamName){
-                    UpdateRedCardPerTeam(teamName);
-                }
-            }
-        });
-    });
-
-
-    return redCardsIssuedPerTeamIn2014;
+        return acc;
+    },{})
 }
 
-module.exports = numberOfRedCardsIssuedPerTeamIn2014;
+module.exports = getNumberOfRedCardsIssuedPerTeamInAYear;
