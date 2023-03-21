@@ -49,11 +49,8 @@ function getWinTeamFromPenalties(match){
         return
     }
 
-    let homeTeamNameGoals = winCondition.split(' ');
-    homeTeamNameGoals = parseInt(homeTeamNameGoals[homeTeamNameGoals.length - 4][1]);
-
-    let awayTeamNameGoals = winCondition.split(' ');
-    awayTeamNameGoals = parseInt(awayTeamNameGoals[awayTeamNameGoals.length - 2][0]);
+    const homeTeamNameGoals = parseInt(winCondition.replace(/[^0-9]/g,'')[0]);
+    const awayTeamNameGoals = parseInt(winCondition.replace(/[^0-9]/g,'')[1]);
 
     if(homeTeamNameGoals > awayTeamNameGoals){
         return match['Home Team Name'];
