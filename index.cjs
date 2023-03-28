@@ -1,62 +1,100 @@
-const fs = require("fs");
-const csv = require("csvtojson");
 const path = require("path");
+const fs = require("fs").promises;
 
-const worldCupMatchesPath = path.join(__dirname,"src/data/WorldCupMatches.csv");
-const worldCupPlayersPath = path.join(__dirname,"src/data/WorldCupPlayers.csv");
-const worldCupsPath = path.join(__dirname,"src/data/WorldCups.csv");
-
+const getJSONfromQuery = require(path.join(__dirname, "getJSONfromQuery.js"));
 
 //Ques 1 - Number of matches played per city
-csv()
-    .fromFile(worldCupMatchesPath)
-    .then((matches) => {
-        const getNumberOfMatchesPlayedPerCity = require(path.join(__dirname, './src/server/1-number-of-matches-played-per-city.cjs'));
+async function ques1() {
+  const query = require(path.join(
+    __dirname,
+    "./src/server/1-number-of-matches-played-per-city.cjs"
+  ));
+  const writefilePath = path.join(
+    __dirname,
+    "./src/public/output/1-number-of-matches-played-per-city.json"
+  );
 
-        let result = getNumberOfMatchesPlayedPerCity(matches.filter((match) => match.City !== ''));
+  let result = await getJSONfromQuery(query);
+  result = result.reduce((acc, entries) => {
+    const city = entries.city;
+    acc[city] = entries.matches;
+    return acc;
+  }, {});
 
-        fs.writeFileSync(path.join(__dirname, './src/public/output/1-number-of-matches-played-per-city.json'), JSON.stringify(result), "utf-8");
-    })
-
+  await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
+}
+ques1();
 
 //Ques 2 - Number of matches won per team
-csv()
-    .fromFile(worldCupMatchesPath)
-    .then((matches) => {
-        const getNumberOfMatchesWonPerTeam = require(path.join(__dirname, './src/server/2-number-of-matches-won-per-team.cjs'));
-        
-        let result = getNumberOfMatchesWonPerTeam(matches.filter((match) => match.City !== ''));
+async function ques2() {
+  const query = require(path.join(
+    __dirname,
+    "./src/server/2-number-of-matches-won-per-team.cjs"
+  ));
+  const writefilePath = path.join(
+    __dirname,
+    "./src/public/output/2-number-of-matches-won-per-team.json"
+  );
 
-        fs.writeFileSync(path.join(__dirname, './src/public/output/2-number-of-matches-won-per-team.json'), JSON.stringify(result), "utf-8");
-    })
+  let result = await getJSONfromQuery(query);
+  result = result.reduce((acc, entries) => {
+    const country = entries.teamname;
+    acc[country] = parseInt(entries.wins);
+    return acc;
+  }, {});
+
+  await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
+}
+ques2();
 
 //Ques 3 - Find number of red cards issued per team in 2014 world cup
-csv()
-    .fromFile(worldCupMatchesPath)
-    .then((matches) => {
-        csv()
-            .fromFile(worldCupPlayersPath)
-            .then((players) => {
+async function ques3() {
+  const query = require(path.join(
+    __dirname,
+    "./src/server/3-number-of-red-cards-issued-per-team-in-2014.cjs"
+  ));
+  const writefilePath = path.join(
+    __dirname,
+    "./src/public/output/3-red-cards-issued-per-team-in-2014.json"
+  );
+  let result = await getJSONfromQuery(query);
+  result = result.reduce((acc, entries) => {
+    const teamName = entries.teamname;
+    acc[teamName] = entries.redcards;
+    return acc;
+  }, {});
 
-                const numberOfRedCardsIssuedPerTeamIn2014 = require(path.join(__dirname,'./src/server/3-number-of-red-cards-issued-per-team-in-2014.cjs'));
-
-                let result = numberOfRedCardsIssuedPerTeamIn2014(matches.filter((match) => match.City !== ''),players,2014);
-
-                fs.writeFileSync(path.join(__dirname,'./src/public/output/3-red-cards-issued-per-team-in-2014.json'), JSON.stringify(result), "utf-8");
-            })
-    })
-
+  await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
+}
+ques3();
 
 //Ques 4 - Find the top 10 players with the highest probability of scoring a goal in a match
-// Considering player has played atleast 5 matches.
-csv()
-    .fromFile(worldCupPlayersPath)
-    .then((players) => {
+async function ques4() {
+  const query = require(path.join(
+    __dirname,
+    "./src/server/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.cjs"
+  ));
+  const writefilePath = path.join(
+    __dirname,
+    "./src/public/output/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.json"
+  );
+  let result = await getJSONfromQuery(query);
 
-        const top10PlayersWithHighestProbabilityScoringAGoalInAMatch = require(path.join(__dirname,'./src/server/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.cjs'));
-
-        let result = top10PlayersWithHighestProbabilityScoringAGoalInAMatch(players,10);
-
-        fs.writeFileSync(path.join(__dirname,'./src/public/output/4-top-10-players-with-highest-probability-scoring-a-goal-in-a-match.json'), JSON.stringify(result) ,"utf-8");
-
+  result = result
+    .filter((player) => player.matches > 5)
+    .sort((player1, player2) => {
+      return parseFloat(player1.scoringprob) >= parseFloat(player2.scoringprob)
+        ? parseFloat(player1.scoringprob) === parseFloat(player2.scoringprob)
+          ? 0
+          : -1
+        : 1;
     })
+    .slice(0, 10)
+    .reduce((acc, playerStats) => {
+      acc[playerStats.playername] = playerStats.scoringprob;
+      return acc;
+    }, {});
+
+  await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
+}
+ques4();

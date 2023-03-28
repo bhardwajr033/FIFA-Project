@@ -1,39 +1,13 @@
-function getNumberOfRedCardsIssuedPerTeamInAYear(worldCupMatches,worldCupPlayers,year = 2014){
-    
-    if(!worldCupMatches || !worldCupPlayers){
-        return {};
-    }
+let query = `select (
+    case
+    when worldcupmatches.hometeaminitials = worldcupplayers.teaminitials then worldcupmatches.hometeamname
+    else worldcupmatches.awayteamname
+    end
+) as teamname, count(teaminitials) as redcards
+from worldcupplayers inner join worldcupmatches on worldcupplayers.matchid = worldcupmatches.matchid 
+where worldcupplayers.event like '%R%' and worldcupmatches.year = 2014
+group by teamname;
+`
+;
 
-    if(!Array.isArray(worldCupMatches) || !Array.isArray(worldCupPlayers)){
-        return {};
-    }
-
-
-    const teamNamesofAYear = worldCupMatches.filter(match => match.Year === year.toString())
-    .reduce((acc,match) => {
-        acc[match.MatchID] = {
-            homeTeamInitials : match['Home Team Initials'],
-            homeTeamName : match['Home Team Name'],
-            awayTeamName : match['Away Team Name']
-        }
-        return acc;
-    },{});
-
-    return worldCupPlayers.filter(player => player.Event.includes('R'))
-    .reduce((acc,player) => {
-        const match = teamNamesofAYear[player.MatchID];
-        if(!match){
-        }
-        else if(match.homeTeamInitials === player['Team Initials']){
-            acc[match.homeTeamName] = acc[match.homeTeamName] || 0;
-            acc[match.homeTeamName]+=1;
-        }
-        else{
-            acc[match.awayTeamName] = acc[match.awayTeamName] || 0;
-            acc[match.awayTeamName]+=1;
-        }
-        return acc;
-    },{})
-}
-
-module.exports = getNumberOfRedCardsIssuedPerTeamInAYear;
+module.exports = query;
