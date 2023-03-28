@@ -5,6 +5,7 @@ ROUND((SUM(CASE WHEN Event LIKE '%G%' THEN 1 ELSE 0 END) * 100.0 / COUNT(*))::nu
 FROM worldCupPlayers
 GROUP BY PlayerName
 HAVING COUNT(*) > 5
-ORDER BY scoringProb DESC;
+ORDER BY scoringProb DESC
+limit 10;
 `
 module.exports = query;

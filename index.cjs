@@ -81,15 +81,6 @@ async function ques4() {
   let result = await getJSONfromQuery(query);
 
   result = result
-    .filter((player) => player.matches > 5)
-    .sort((player1, player2) => {
-      return parseFloat(player1.scoringprob) >= parseFloat(player2.scoringprob)
-        ? parseFloat(player1.scoringprob) === parseFloat(player2.scoringprob)
-          ? 0
-          : -1
-        : 1;
-    })
-    .slice(0, 10)
     .reduce((acc, playerStats) => {
       acc[playerStats.playername] = playerStats.scoringprob;
       return acc;
