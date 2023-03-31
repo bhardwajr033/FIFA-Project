@@ -13,4 +13,8 @@ app.get("/app.js", (req, res) => {
   res.sendFile(path.resolve("public/app.js"));
 });
 
+app.get("/style.css", (req, res) => {
+    res.sendFile(path.resolve("public/style.css"));
+  });
+
 app.listen(port, () => console.log(`Server is listening on port ${port}`));
