@@ -23,7 +23,6 @@ async function ques1() {
 
   await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
 }
-ques1();
 
 //Ques 2 - Number of matches won per team
 async function ques2() {
@@ -45,7 +44,6 @@ async function ques2() {
 
   await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
 }
-ques2();
 
 //Ques 3 - Find number of red cards issued per team in 2014 world cup
 async function ques3() {
@@ -66,7 +64,6 @@ async function ques3() {
 
   await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
 }
-ques3();
 
 //Ques 4 - Find the top 10 players with the highest probability of scoring a goal in a match
 async function ques4() {
@@ -80,12 +77,12 @@ async function ques4() {
   );
   let result = await getJSONfromQuery(query);
 
-  result = result
-    .reduce((acc, playerStats) => {
-      acc[playerStats.playername] = playerStats.scoringprob;
-      return acc;
-    }, {});
+  result = result.reduce((acc, playerStats) => {
+    acc[playerStats.playername] = playerStats.scoringprob;
+    return acc;
+  }, {});
 
   await fs.writeFile(writefilePath, JSON.stringify(result), "utf-8");
 }
-ques4();
+
+module.exports = { ques1: ques1, ques2: ques2, ques3: ques3, ques4: ques4 };
