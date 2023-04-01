@@ -6,19 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" /> 
     <title>FIFA PROJECT</title>
+    <link rel="icon" type="image/x-icon" href="https://play-lh.googleusercontent.com/De2c5IRDNg0QYNsB8n-O8io-Z2wYBm0u0V9N_q_Jh-X87K1JfieWSW3U3ypJCXhZLQ">
     <style>
         body{
-            background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/World_Map_FIFA.svg/1280px-World_Map_FIFA.svg.png");
+            background-image: url("https://www.reviewofreligions.org/wp-content/uploads/2022/11/FIFA-World-Cup-small-shutterstock_2215849493.jpeg");
+        }
+        #mainButtons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            
+        }
+        button{
+            margin: 10px;
+            padding: 15px 30px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            border-radius: 10px;
+            display: block;
+            border: 0px;
+            font-weight: 700;
+            box-shadow: 0px 0px 14px -7px #f09819;
+            background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        button:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        h1{
+            text-align: center;
+            color: azure;
+        }
+        h4{
+            text-align: center;
+            color: rgb(7, 241, 229);
         }
     </style>
 </head>
 <body>
       <h1>FIFA PROJECT</h1>
       <h4>by Rahul Bhardwaj</h4>
-      <button onclick="getProperty('matchesPerCity')">Matches Per City</button>
-      <button onclick="getProperty('matchesWonPerTeam')">Matches Won Per Team</button>
-      <button onclick="getProperty('redCardsPerTeamIn2014')">Number Of Red Cards Per Team</button>
-      <button onclick="getProperty('probabilityOfTopTenPlayers')">Probability Of Top 10 Players</button>
+      <div id = "mainButtons">
+        <button onclick="getProperty('matchesPerCity')">Matches Per City</button>
+        <button onclick="getProperty('matchesWonPerTeam')">Matches Won Per Team</button>
+        <button onclick="getProperty('redCardsPerTeamIn2014')">Number Of Red Cards Per Team</button>
+        <button onclick="getProperty('probabilityOfTopTenPlayers')">Probability Of Top 10 Players</button>
+      </div>
+     
     <div id="container"></div>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
