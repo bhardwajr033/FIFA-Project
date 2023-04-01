@@ -16,6 +16,6 @@
 "probabilityOfTopTenPlayers" : {"title" : "Top 10 players by Probability of Goals Scoring in a match",
 "yAxisLabel" : "Probability",
 "xAxisLabel" : "Players",
-"pointFormat" : "Probabitity: <b>{point.y:.1f}</b>"
+"pointFormat" : "Probabitity: <b>{point.y:.1f}%</b>"
 }
 }
