@@ -1,8 +1,8 @@
 async function getProperty(property) {
-  const data = await fetch(`https://fifa-project.onrender.com/${property}`).then((res) =>
+  const data = await fetch(`https://fifa-project-six.vercel.app/${property}`).then((res) =>
     res.json()
   );
-  const graphLabels = await fetch(`https://fifa-project.onrender.com/graphLabels`).then(
+  const graphLabels = await fetch(`https://fifa-project-six.vercel.app/graphLabels`).then(
     (res) => res.json()
   );
   buildGraph(data, graphLabels, property);
