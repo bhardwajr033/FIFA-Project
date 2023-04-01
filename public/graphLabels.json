@@ -13,7 +13,7 @@
 "xAxisLabel" : "Country",
 "pointFormat" : "Red Cards: <b>{point.y}</b>"
 },
-"probabilityOfTopTenPlayers" : {"title" : "Top 10 players by Probability of Goals Scoring in a match",
+"probabilityOfTopTenPlayers" : {"title" : "Top 10 players by Probability of Goals Scoring in a FIFA match",
 "yAxisLabel" : "Probability",
 "xAxisLabel" : "Players",
 "pointFormat" : "Probabitity: <b>{point.y:.1f}%</b>"
