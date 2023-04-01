@@ -1,8 +1,8 @@
 async function getProperty(property) {
-  const data = await fetch(`http://localhost:3000/${property}`).then((res) =>
+  const data = await fetch(`https://fifa-project.onrender.com/${property}`).then((res) =>
     res.json()
   );
-  const graphLabels = await fetch(`http://localhost:3000/graphLabels`).then(
+  const graphLabels = await fetch(`https://fifa-project.onrender.com/graphLabels`).then(
     (res) => res.json()
   );
   buildGraph(data, graphLabels, property);
