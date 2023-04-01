@@ -1,0 +1,21 @@
+{"matchesPerCity" : {"title" : "Matches per City in FIFA Worldcup",
+"yAxisLabel" : "No. of Matches",
+"xAxisLabel" : "City",
+"pointFormat" : "Matches held: <b>{point.y}</b>"
+},
+"matchesWonPerTeam" : {"title" : "Matches won Per Team in FIFA Worldcup",
+"yAxisLabel" : "No. of Matches",
+"xAxisLabel" : "Country",
+"pointFormat" : "Matches Won: <b>{point.y}</b>"
+},
+"redCardsPerTeamIn2014" : {"title" : "Red Card per team in FIFA Worldcup 2014",
+"yAxisLabel" : "No. of Red Cards",
+"xAxisLabel" : "Country",
+"pointFormat" : "Red Cards: <b>{point.y}</b>"
+},
+"probabilityOfTopTenPlayers" : {"title" : "Top 10 players by Probability of Goals Scoring in a match",
+"yAxisLabel" : "Probability",
+"xAxisLabel" : "Players",
+"pointFormat" : "Probabitity: <b>{point.y:.1f}</b>"
+}
+}
