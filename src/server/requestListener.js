@@ -20,7 +20,7 @@ const requestListener = (req, res) => {
           .catch((err) => res.status(500).send("Error while reading app.js"));
         break;
 
-      case "/style.js":
+      case "/style.css":
         fs.readFile(path.resolve("public/style.css"), "utf-8")
           .then((data) => res.send(data))
           .catch((err) =>
